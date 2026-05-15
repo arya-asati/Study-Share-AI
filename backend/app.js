@@ -17,7 +17,7 @@ const chatRoutes =
   require("./routes/chatRoutes");
 
 const historyRoutes =
-  require("./routes/HistoryRoutes");
+  require("./routes/historyRoutes");
 
 const app = express();
 
