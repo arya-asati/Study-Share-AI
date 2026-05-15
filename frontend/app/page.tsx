@@ -3,8 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { TypeAnimation } from "react-type-animation";
+import ChatBox from "../components/ChatBox";
+
 import Sidebar from "../components/Sidebar";
 import Flashcard from "../components/Flashcard";
+import ParticlesBackground from "../components/ParticlesBackground";
 
 export default function Home() {
 
@@ -92,29 +96,49 @@ export default function Home() {
 
   return (
 
-    <main className="min-h-screen bg-black text-white overflow-x-hidden relative">
+    <main className="min-h-screen bg-black text-white overflow-x-hidden relative z-0">
 
-      {/* ANIMATED BACKGROUND */}
+      {/* PARTICLES BACKGROUND */}
+      <ParticlesBackground />
 
-      <div className="absolute inset-0 overflow-hidden">
+      {/* GALAXY GLOW BACKGROUND */}
 
-        <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-cyan-500/20 blur-[150px] rounded-full animate-pulse"></div>
+      <div className="absolute inset-0 z-0 overflow-hidden">
 
-        <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-blue-500/20 blur-[150px] rounded-full animate-pulse"></div>
+        {/* CYAN GLOW */}
+        <div className="absolute top-[-200px] left-[-200px] w-[700px] h-[700px] bg-cyan-500/20 blur-[180px] rounded-full animate-pulse"></div>
 
-        <div className="absolute top-[30%] left-[40%] w-[300px] h-[300px] bg-purple-500/10 blur-[120px] rounded-full animate-bounce"></div>
+        {/* BLUE GLOW */}
+        <div className="absolute bottom-[-200px] right-[-200px] w-[700px] h-[700px] bg-blue-500/20 blur-[180px] rounded-full animate-pulse"></div>
 
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:70px_70px]"></div>
+        {/* PURPLE GLOW */}
+        <div className="absolute top-[40%] left-[40%] w-[500px] h-[500px] bg-purple-500/10 blur-[160px] rounded-full animate-pulse"></div>
+
+        {/* STARS */}
+        <div className="absolute top-[10%] left-[20%] w-2 h-2 bg-white rounded-full animate-ping"></div>
+
+        <div className="absolute top-[30%] left-[70%] w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+
+        <div className="absolute top-[70%] left-[50%] w-2 h-2 bg-blue-400 rounded-full animate-ping"></div>
+
+        <div className="absolute top-[80%] left-[80%] w-2 h-2 bg-white rounded-full animate-pulse"></div>
+
+        <div className="absolute top-[50%] left-[10%] w-2 h-2 bg-cyan-300 rounded-full animate-ping"></div>
+
+        {/* GRID */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:70px_70px]"></div>
 
       </div>
 
       {/* SIDEBAR */}
 
-      <Sidebar />
+      <div className="relative z-10">
+        <Sidebar />
+      </div>
 
       {/* MAIN */}
 
-      <div className="ml-72 relative z-10">
+      <div className="ml-72 relative z-10 backdrop-blur-[1px]">
 
         {/* NAVBAR */}
 
@@ -135,11 +159,11 @@ export default function Home() {
           <button
             onClick={() =>
               window.scrollTo({
-                top: 900,
+                top: 1200,
                 behavior: "smooth",
               })
             }
-            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold hover:scale-105 transition-all duration-300"
+            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold hover:scale-105 transition-all duration-300 shadow-lg shadow-cyan-500/30"
           >
             Get Started
           </button>
@@ -157,7 +181,7 @@ export default function Home() {
             className="text-center max-w-6xl"
           >
 
-            <div className="inline-block px-6 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 mb-10">
+            <div className="inline-block px-6 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 mb-10 backdrop-blur-xl">
               🚀 AI Powered Learning Platform
             </div>
 
@@ -165,17 +189,38 @@ export default function Home() {
               StudyShared AI
             </h1>
 
-            <p className="text-zinc-300 text-xl md:text-2xl leading-10 max-w-4xl mx-auto mb-12">
-              Upload PDFs and instantly generate AI summaries,
-              viva questions, MCQs, flashcards and smart tutoring.
-            </p>
+            {/* AI TYPING TEXT */}
+
+            <div className="text-zinc-300 text-2xl md:text-3xl leading-10 max-w-5xl mx-auto mb-12 font-semibold">
+
+              <TypeAnimation
+                sequence={[
+                  "Generate AI Summaries instantly 🚀",
+                  2000,
+                  "Create Viva Questions automatically 🎤",
+                  2000,
+                  "Generate Smart Flashcards 🧠",
+                  2000,
+                  "Practice AI MCQs 📝",
+                  2000,
+                  "Chat with your AI Tutor 🤖",
+                  2000,
+                ]}
+                wrapper="span"
+                speed={50}
+                repeat={Infinity}
+              />
+
+            </div>
+
+            {/* BUTTONS */}
 
             <div className="flex flex-col md:flex-row gap-6 justify-center">
 
               <button
                 onClick={() =>
                   window.scrollTo({
-                    top: 1200,
+                    top: 1400,
                     behavior: "smooth",
                   })
                 }
@@ -253,7 +298,7 @@ export default function Home() {
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.04 }}
-                className="bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[35px] p-10 hover:border-cyan-500/40 transition-all duration-500"
+                className="bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[35px] p-10 hover:border-cyan-500/40 transition-all duration-500 hover:shadow-cyan-500/20 hover:shadow-2xl"
               >
 
                 <div className="text-6xl mb-6">
@@ -276,11 +321,11 @@ export default function Home() {
 
         </section>
 
-        {/* UPLOAD */}
+        {/* UPLOAD SECTION */}
 
         <section className="px-10 pb-24">
 
-          <div className="bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[40px] p-12">
+          <div className="bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[40px] p-12 shadow-2xl">
 
             <h2 className="text-5xl font-black mb-8">
               Upload Your PDF
@@ -304,7 +349,27 @@ export default function Home() {
               disabled={loading}
               className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-2xl font-black hover:scale-[1.02] transition-all duration-300"
             >
-              {loading ? "Uploading..." : "Upload PDF"}
+
+              {loading ? (
+
+                <div className="flex items-center justify-center gap-3">
+
+                  <div className="w-4 h-4 rounded-full bg-white animate-bounce"></div>
+
+                  <div className="w-4 h-4 rounded-full bg-white animate-bounce delay-150"></div>
+
+                  <div className="w-4 h-4 rounded-full bg-white animate-bounce delay-300"></div>
+
+                  <span className="ml-3">
+                    AI Generating...
+                  </span>
+
+                </div>
+
+              ) : (
+                "Upload PDF"
+              )}
+
             </button>
 
           </div>
@@ -317,17 +382,26 @@ export default function Home() {
 
           <section className="px-10 py-10">
 
-            <div className="bg-white/5 border border-cyan-500/20 rounded-[40px] p-10">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="bg-white/5 border border-cyan-500/20 rounded-[40px] p-10 shadow-2xl shadow-cyan-500/10"
+            >
 
               <h2 className="text-5xl font-black text-cyan-400 mb-10">
                 AI Summary
               </h2>
 
-              <p className="text-zinc-300 text-lg leading-10">
-                {summary}
-              </p>
+              <TypeAnimation
+                sequence={[summary]}
+                wrapper="p"
+                speed={80}
+                cursor={true}
+                className="text-zinc-300 leading-9 text-lg whitespace-pre-line"
+              />
 
-            </div>
+            </motion.div>
 
           </section>
 
@@ -452,6 +526,29 @@ export default function Home() {
           </section>
 
         )}
+        {/* AI CHAT TUTOR */}
+
+<section className="px-10 py-20">
+
+  <div className="bg-white/5 border border-cyan-500/20 rounded-[40px] p-10 backdrop-blur-2xl">
+
+    <div className="text-center mb-10">
+
+      <h2 className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text mb-6">
+        AI Study Tutor
+      </h2>
+
+      <p className="text-zinc-400 text-xl">
+        Ask doubts instantly using AI chat assistant.
+      </p>
+
+    </div>
+
+    <ChatBox />
+
+  </div>
+
+</section>
 
         {/* FOOTER */}
 
@@ -468,8 +565,7 @@ export default function Home() {
                 </h2>
 
                 <p className="text-zinc-400 text-lg leading-9">
-                  AI Powered Study Operating System for
-                  modern engineering students.
+                  AI Powered Study Operating System for modern engineering students.
                 </p>
 
               </div>
@@ -514,7 +610,7 @@ export default function Home() {
             <div className="border-t border-zinc-800 mt-16 pt-8 text-center">
 
               <p className="text-zinc-500">
-                © 2026 StudyShared AI • Built By Arya Asati
+                © 2026 StudyShared AI • Built By AI TRACK STUDENT
               </p>
 
             </div>

@@ -1,136 +1,85 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import ParticlesBackground from "../../components/ParticlesBackground";
 
-export default function LoginPage() {
-
-  const router = useRouter();
+export default function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-
-    try {
-
-      const res = await fetch(
-        "http://localhost:5000/api/auth/login",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (data.token) {
-
-        localStorage.setItem(
-          "token",
-          data.token
-        );
-
-        router.push("/");
-
-      } else {
-
-        alert(data.message);
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Login failed");
-
-    }
-
-  };
-
   return (
 
-    <main className="min-h-screen bg-black flex items-center justify-center px-6">
+    <main className="min-h-screen bg-black overflow-hidden relative flex items-center justify-center">
 
-      <div className="w-full max-w-md bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[35px] p-10 shadow-2xl">
+      {/* PARTICLES BACKGROUND */}
+      <ParticlesBackground />
 
-        <div className="text-center mb-10">
+      {/* GLOW EFFECTS */}
+      <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-cyan-500/20 blur-[150px] rounded-full"></div>
 
-          <h1 className="text-6xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text mb-3">
-            Login
-          </h1>
+      <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-blue-500/20 blur-[150px] rounded-full"></div>
 
-          <p className="text-zinc-400">
-            Welcome back to StudyShared AI
-          </p>
+      {/* CONTENT */}
+      <div className="relative z-10 w-full max-w-md">
 
-        </div>
+        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[40px] p-10 shadow-2xl">
 
-        <input
-          type="email"
-          placeholder="Enter email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-          className="w-full bg-zinc-900 border border-zinc-700 text-white p-5 rounded-2xl mb-6 outline-none focus:border-cyan-500"
-        />
+          {/* TITLE */}
+          <div className="text-center mb-10">
 
-        <input
-          type="password"
-          placeholder="Enter password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-          className="w-full bg-zinc-900 border border-zinc-700 text-white p-5 rounded-2xl mb-3 outline-none focus:border-cyan-500"
-        />
+            <h1 className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text mb-4">
+              Login
+            </h1>
 
-        <div className="flex justify-end mb-8">
+            <p className="text-zinc-400">
+              Welcome back to StudyShared AI
+            </p>
 
-          <button
-            onClick={() =>
-              router.push("/forgot-password")
-            }
-            className="text-sm text-cyan-400 hover:text-cyan-300"
-          >
-            Forgot Password?
-          </button>
+          </div>
 
-        </div>
+          {/* FORM */}
+          <div className="space-y-6">
 
-        <button
-          onClick={handleLogin}
-          className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-[1.02] transition-all duration-300 text-white py-5 rounded-2xl text-2xl font-black shadow-lg shadow-cyan-500/30"
-        >
-          Login
-        </button>
+            <input
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
+            />
 
-        <div className="text-center mt-8">
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
+            />
 
-          <p className="text-zinc-400">
+            <button className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-xl font-black hover:scale-105 transition-all duration-300 shadow-2xl shadow-cyan-500/30">
+              Login
+            </button>
 
-            Don&apos;t have an account?{" "}
+          </div>
 
-            <span
-              onClick={() =>
-                router.push("/signup")
-              }
-              className="text-cyan-400 cursor-pointer hover:text-cyan-300 font-bold"
-            >
-              Sign Up
-            </span>
+          {/* SIGNUP LINK */}
+          <div className="text-center mt-8">
 
-          </p>
+            <p className="text-zinc-400">
+              Don&apos;t have an account?{" "}
+
+              <Link
+                href="/signup"
+                className="text-cyan-400 font-bold hover:text-cyan-300"
+              >
+                Signup
+              </Link>
+
+            </p>
+
+          </div>
 
         </div>
 

@@ -1,109 +1,94 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import ParticlesBackground from "../../components/ParticlesBackground";
 
-export default function SignupPage() {
-
-  const router = useRouter();
+export default function Signup() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signupUser = async () => {
-
-    try {
-
-      const res = await fetch(
-        "http://localhost:5000/api/auth/signup",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (res.ok) {
-
-  alert("Signup successful");
-
-  router.push("/login");
-
-} else {
-
-  alert(data.message || "Signup failed");
-
-}
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Signup failed");
-
-    }
-
-  };
-
   return (
 
-    <main className="min-h-screen flex items-center justify-center bg-black text-white">
+    <main className="min-h-screen bg-black overflow-hidden relative flex items-center justify-center">
 
-      <div className="w-full max-w-md bg-zinc-900 p-10 rounded-3xl border border-zinc-800 shadow-2xl">
+      {/* PARTICLES BACKGROUND */}
+      <ParticlesBackground />
 
-        <h1 className="text-5xl font-black text-center mb-10 bg-gradient-to-r from-pink-400 to-purple-500 text-transparent bg-clip-text">
-          Signup
-        </h1>
+      {/* GLOW EFFECTS */}
+      <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-pink-500/20 blur-[150px] rounded-full"></div>
 
-        <div className="space-y-6">
+      <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-purple-500/20 blur-[150px] rounded-full"></div>
 
-          <input
-            type="text"
-            placeholder="Enter name"
-            value={name}
-            onChange={(e) =>
-              setName(e.target.value)
-            }
-            className="w-full p-5 rounded-2xl bg-zinc-800 border border-zinc-700"
-          />
+      {/* CONTENT */}
+      <div className="relative z-10 w-full max-w-md">
 
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-            className="w-full p-5 rounded-2xl bg-zinc-800 border border-zinc-700"
-          />
+        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[40px] p-10 shadow-2xl">
 
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            className="w-full p-5 rounded-2xl bg-zinc-800 border border-zinc-700"
-          />
+          {/* LOGO */}
+          <div className="text-center mb-10">
 
-          <button
-            onClick={signupUser}
-            className="w-full py-5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-2xl font-black"
-          >
-            Create Account
-          </button>
+            <h1 className="text-5xl font-black bg-gradient-to-r from-pink-400 to-purple-500 text-transparent bg-clip-text mb-4">
+              Signup
+            </h1>
+
+            <p className="text-zinc-400">
+              Create your AI learning account
+            </p>
+
+          </div>
+
+          {/* FORM */}
+          <div className="space-y-6">
+
+            <input
+              type="text"
+              placeholder="Enter name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
+            />
+
+            <input
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
+            />
+
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
+            />
+
+            <button className="w-full py-5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-xl font-black hover:scale-105 transition-all duration-300">
+              Create Account
+            </button>
+
+          </div>
+
+          {/* LOGIN LINK */}
+          <div className="text-center mt-8">
+
+            <p className="text-zinc-400">
+              Already have an account?{" "}
+
+              <Link
+                href="/login"
+                className="text-pink-400 font-bold hover:text-pink-300"
+              >
+                Login
+              </Link>
+
+            </p>
+
+          </div>
 
         </div>
 
