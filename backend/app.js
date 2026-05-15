@@ -85,3 +85,13 @@ app.use(
 "/api/analytics",
 analyticsRoutes
 );
+app.post("/api/auth/signup", async (req, res) => {
+
+  const { name, email, password } =
+    req.body;
+
+  return res.json({
+    message: "Signup successful",
+  });
+
+});

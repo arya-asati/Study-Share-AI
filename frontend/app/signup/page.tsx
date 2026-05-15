@@ -1,94 +1,127 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import ParticlesBackground from "../../components/ParticlesBackground";
 
-export default function Signup() {
+export default function SignupPage() {
+
+  const router = useRouter();
 
   const [name, setName] = useState("");
+
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const handleSignup = async () => {
+
+    try {
+
+      const res = await fetch(
+        "https://study-share-ai.onrender.com/api/auth/signup",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+
+        alert("Signup Successful");
+
+        router.push("/login");
+
+      } else {
+
+        alert(data.message);
+
+      }
+
+    } catch (err) {
+
+      console.log(err);
+
+      alert("Server Error");
+
+    }
+
+  };
 
   return (
 
-    <main className="min-h-screen bg-black overflow-hidden relative flex items-center justify-center">
+    <main className="min-h-screen bg-black flex items-center justify-center text-white px-6">
 
-      {/* PARTICLES BACKGROUND */}
-      <ParticlesBackground />
+      <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-3xl p-10 backdrop-blur-2xl">
 
-      {/* GLOW EFFECTS */}
-      <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-pink-500/20 blur-[150px] rounded-full"></div>
+        <h1 className="text-5xl font-black mb-10 text-center bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text">
+          Sign Up
+        </h1>
 
-      <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-purple-500/20 blur-[150px] rounded-full"></div>
+        <div className="space-y-6">
 
-      {/* CONTENT */}
-      <div className="relative z-10 w-full max-w-md">
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={name}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
+            className="w-full p-4 rounded-2xl bg-zinc-900 border border-zinc-700"
+          />
 
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[40px] p-10 shadow-2xl">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+            className="w-full p-4 rounded-2xl bg-zinc-900 border border-zinc-700"
+          />
 
-          {/* LOGO */}
-          <div className="text-center mb-10">
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            className="w-full p-4 rounded-2xl bg-zinc-900 border border-zinc-700"
+          />
 
-            <h1 className="text-5xl font-black bg-gradient-to-r from-pink-400 to-purple-500 text-transparent bg-clip-text mb-4">
-              Signup
-            </h1>
+          <button
+            onClick={handleSignup}
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-xl font-black"
+          >
+            Create Account
+          </button>
 
-            <p className="text-zinc-400">
-              Create your AI learning account
-            </p>
+          <p className="text-center text-zinc-400">
 
-          </div>
+            Already have account?{" "}
 
-          {/* FORM */}
-          <div className="space-y-6">
+            <Link
+              href="/login"
+              className="text-cyan-400"
+            >
+              Login
+            </Link>
 
-            <input
-              type="text"
-              placeholder="Enter name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
-            />
-
-            <input
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
-            />
-
-            <input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
-            />
-
-            <button className="w-full py-5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-xl font-black hover:scale-105 transition-all duration-300">
-              Create Account
-            </button>
-
-          </div>
-
-          {/* LOGIN LINK */}
-          <div className="text-center mt-8">
-
-            <p className="text-zinc-400">
-              Already have an account?{" "}
-
-              <Link
-                href="/login"
-                className="text-pink-400 font-bold hover:text-pink-300"
-              >
-                Login
-              </Link>
-
-            </p>
-
-          </div>
+          </p>
 
         </div>
 
