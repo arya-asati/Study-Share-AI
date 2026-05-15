@@ -64,3 +64,75 @@ body {
   }
 
 }
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: black;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    #06b6d4,
+    #2563eb
+  );
+  border-radius: 999px;
+}
+
+.glow {
+  box-shadow:
+    0 0 20px rgba(34,211,238,0.3),
+    0 0 50px rgba(59,130,246,0.2);
+}
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float {
+  animation: float 4s ease-in-out infinite;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: black;
+  overflow-x: hidden;
+}
+
+@keyframes float {
+
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}

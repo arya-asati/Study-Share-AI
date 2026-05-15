@@ -39,25 +39,25 @@ export default function Sidebar() {
 
 </div>
 
-          <button className="bg-cyan-500 text-white p-4 rounded-xl font-bold hover:scale-105 transition-all duration-300">
-            Dashboard
-          </button>
+          <div className="space-y-5 mt-12">
 
-          <button className="bg-zinc-900 hover:bg-zinc-800 p-4 rounded-xl transition-all duration-300">
-            AI Summary
-          </button>
+  <button className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold">
+    Dashboard
+  </button>
 
-          <button className="bg-zinc-900 hover:bg-zinc-800 p-4 rounded-xl transition-all duration-300">
-            Viva Questions
-          </button>
+  <button className="w-full py-5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 transition-all">
+    AI Summary
+  </button>
 
-          <button className="bg-zinc-900 hover:bg-zinc-800 p-4 rounded-xl transition-all duration-300">
-            Analytics
-          </button>
+  <button className="w-full py-5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 transition-all">
+    Viva Questions
+  </button>
 
-          <button className="bg-zinc-900 hover:bg-zinc-800 p-4 rounded-xl transition-all duration-300">
-            AI Tutor
-          </button>
+  <button className="w-full py-5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 transition-all">
+    Analytics
+  </button>
+
+</div>
 
         </div>
 
