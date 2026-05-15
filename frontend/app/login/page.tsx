@@ -1,85 +1,120 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 import ParticlesBackground from "../../components/ParticlesBackground";
 
-export default function Login() {
+export default function LoginPage() {
+
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+
+  try {
+
+    const res = await fetch(
+      "https://study-share-ai.onrender.com/api/auth/login",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    console.log(data);
+
+    if (res.ok) {
+
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+
+      router.push("/");
+
+    } else {
+
+      alert(data.message);
+
+    }
+
+  } catch (err) {
+
+    console.log(err);
+
+    alert("Server Error");
+
+  }
+
+};
 
   return (
 
-    <main className="min-h-screen bg-black overflow-hidden relative flex items-center justify-center">
+    <main className="min-h-screen bg-black flex items-center justify-center overflow-hidden relative">
 
-      {/* PARTICLES BACKGROUND */}
+      {/* PARTICLES */}
+
       <ParticlesBackground />
 
-      {/* GLOW EFFECTS */}
-      <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-cyan-500/20 blur-[150px] rounded-full"></div>
+      {/* GLOW */}
 
-      <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-blue-500/20 blur-[150px] rounded-full"></div>
+      <div className="absolute top-[-200px] left-[-200px] w-[500px] h-[500px] bg-cyan-500/20 blur-[140px] rounded-full"></div>
 
-      {/* CONTENT */}
-      <div className="relative z-10 w-full max-w-md">
+      <div className="absolute bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-blue-500/20 blur-[140px] rounded-full"></div>
 
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[40px] p-10 shadow-2xl">
+      {/* LOGIN BOX */}
 
-          {/* TITLE */}
-          <div className="text-center mb-10">
+      <div className="relative z-10 w-[450px] bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[40px] p-10">
 
-            <h1 className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text mb-4">
-              Login
-            </h1>
+        <h1 className="text-6xl font-black text-center bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text mb-10">
+          Login
+        </h1>
 
-            <p className="text-zinc-400">
-              Welcome back to StudyShared AI
-            </p>
+        <div className="space-y-6">
 
-          </div>
+          <input
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+            className="w-full p-5 rounded-2xl bg-zinc-900 border border-zinc-700 text-white outline-none"
+          />
 
-          {/* FORM */}
-          <div className="space-y-6">
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            className="w-full p-5 rounded-2xl bg-zinc-900 border border-zinc-700 text-white outline-none"
+          />
 
-            <input
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
-            />
-
-            <input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-5 rounded-2xl bg-white/5 border border-white/10 text-white outline-none"
-            />
-
-            <button className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-xl font-black hover:scale-105 transition-all duration-300 shadow-2xl shadow-cyan-500/30">
-              Login
-            </button>
-
-          </div>
-
-          {/* SIGNUP LINK */}
-          <div className="text-center mt-8">
-
-            <p className="text-zinc-400">
-              Don&apos;t have an account?{" "}
-
-              <Link
-                href="/signup"
-                className="text-cyan-400 font-bold hover:text-cyan-300"
-              >
-                Signup
-              </Link>
-
-            </p>
-
-          </div>
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-2xl font-black hover:scale-[1.02] transition-all duration-300"
+          >
+            {loading ? "Loading..." : "Login"}
+          </button>
 
         </div>
 
