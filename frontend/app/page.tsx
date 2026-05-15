@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
@@ -8,6 +8,11 @@ import Sidebar from "../components/Sidebar";
 export default function Home() {
 
   const router = useRouter();
+  const [file, setFile] = useState<File | null>(null);
+
+  const [summary, setSummary] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
 
@@ -18,6 +23,52 @@ export default function Home() {
     }
 
   }, [router]);
+  const uploadPDF = async () => {
+
+  if (!file) {
+    alert("Please select a PDF");
+    return;
+  }
+
+  setLoading(true);
+
+  const formData = new FormData();
+
+  formData.append("pdf", file);
+
+  try {
+
+    const res = await fetch(
+      "https://study-share-ai.onrender.com",
+      {
+        method: "POST",
+
+        headers: {
+          Authorization:
+            localStorage.getItem("token") || "",
+        },
+
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+
+    setSummary(
+      data.summary || "No summary generated"
+    );
+
+  } catch (err) {
+
+    console.log(err);
+
+    alert("Upload failed");
+
+  }
+
+  setLoading(false);
+
+};
 
   return (
 
@@ -215,14 +266,35 @@ export default function Home() {
             </p>
 
             <input
-              type="file"
-              accept=".pdf"
-              className="w-full bg-zinc-900 p-5 rounded-2xl border border-zinc-700 mb-8"
-            />
+  type="file"
+  accept=".pdf"
+  onChange={(e) =>
+    setFile(e.target.files?.[0] || null)
+  }
+  className="w-full bg-zinc-900 p-5 rounded-2xl border border-zinc-700 mb-8"
+/>
+            <button
+  onClick={uploadPDF}
+  disabled={loading}
+  className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-2xl font-black hover:scale-[1.02] transition-all duration-300"
+>
+  {loading ? "Uploading..." : "Upload PDF"}
+</button>
+{summary && (
 
-            <button className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-2xl font-black hover:scale-[1.02] transition-all duration-300">
-              Upload PDF
-            </button>
+  <div className="mt-10 bg-zinc-900/60 border border-cyan-500/20 rounded-3xl p-8">
+
+    <h2 className="text-3xl font-black text-cyan-400 mb-6">
+      AI Summary
+    </h2>
+
+    <p className="text-zinc-300 leading-9 text-lg">
+      {summary}
+    </p>
+
+  </div>
+
+)}
 
           </div>
 
