@@ -4,13 +4,18 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Sidebar from "../components/Sidebar";
+import Flashcard from "../components/Flashcard";
 
 export default function Home() {
 
   const router = useRouter();
+
   const [file, setFile] = useState<File | null>(null);
 
   const [summary, setSummary] = useState("");
+  const [mcqs, setMcqs] = useState("");
+  const [flashcards, setFlashcards] = useState("");
+  const [viva, setViva] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -23,58 +28,73 @@ export default function Home() {
     }
 
   }, [router]);
+
   const uploadPDF = async () => {
 
-  if (!file) {
-    alert("Please select a PDF");
-    return;
-  }
+    if (!file) {
+      alert("Please select a PDF");
+      return;
+    }
 
-  setLoading(true);
+    setLoading(true);
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append("pdf", file);
+    formData.append("pdf", file);
 
-  try {
+    try {
 
-    const res = await fetch(
-      "https://study-share-ai.onrender.com/api/notes/upload",
-      {
-        method: "POST",
+      const res = await fetch(
+        "https://study-share-ai.onrender.com/api/notes/upload",
+        {
+          method: "POST",
 
-        headers: {
-          Authorization:
-            localStorage.getItem("token") || "",
-        },
+          headers: {
+            Authorization:
+              localStorage.getItem("token") || "",
+          },
 
-        body: formData,
-      }
-    );
+          body: formData,
+        }
+      );
 
-    const data = await res.json();
+      const data = await res.json();
 
-    setSummary(
-      data.summary || "No summary generated"
-    );
+      console.log(data);
 
-  } catch (err) {
+      setSummary(
+        data.summary || "No summary generated"
+      );
 
-    console.log(err);
+      setMcqs(
+        data.mcqs || "No MCQs generated"
+      );
 
-    alert("Upload failed");
+      setFlashcards(
+        data.flashcards || "No Flashcards generated"
+      );
 
-  }
+      setViva(
+        data.vivaQuestions || "No Viva Questions generated"
+      );
 
-  setLoading(false);
+    } catch (err) {
 
-};
+      console.log(err);
+
+      alert("Upload failed");
+
+    }
+
+    setLoading(false);
+
+  };
 
   return (
 
     <main className="min-h-screen bg-black text-white overflow-x-hidden relative">
 
-      {/* PREMIUM ANIMATED BACKGROUND */}
+      {/* ANIMATED BACKGROUND */}
 
       <div className="absolute inset-0 overflow-hidden">
 
@@ -113,7 +133,12 @@ export default function Home() {
           </div>
 
           <button
-            onClick={() => window.scrollTo({ top: 700, behavior: "smooth" })}
+            onClick={() =>
+              window.scrollTo({
+                top: 900,
+                behavior: "smooth",
+              })
+            }
             className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold hover:scale-105 transition-all duration-300"
           >
             Get Started
@@ -150,7 +175,7 @@ export default function Home() {
               <button
                 onClick={() =>
                   window.scrollTo({
-                    top: 900,
+                    top: 1200,
                     behavior: "smooth",
                   })
                 }
@@ -251,7 +276,7 @@ export default function Home() {
 
         </section>
 
-        {/* UPLOAD SECTION */}
+        {/* UPLOAD */}
 
         <section className="px-10 pb-24">
 
@@ -266,43 +291,171 @@ export default function Home() {
             </p>
 
             <input
-  type="file"
-  accept=".pdf"
-  onChange={(e) =>
-    setFile(e.target.files?.[0] || null)
-  }
-  className="w-full bg-zinc-900 p-5 rounded-2xl border border-zinc-700 mb-8"
-/>
+              type="file"
+              accept=".pdf"
+              onChange={(e) =>
+                setFile(e.target.files?.[0] || null)
+              }
+              className="w-full bg-zinc-900 p-5 rounded-2xl border border-zinc-700 mb-8"
+            />
+
             <button
-  onClick={uploadPDF}
-  disabled={loading}
-  className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-2xl font-black hover:scale-[1.02] transition-all duration-300"
->
-  {loading ? "Uploading..." : "Upload PDF"}
-</button>
-{summary && (
-
-  <div className="mt-10 bg-zinc-900/60 border border-cyan-500/20 rounded-3xl p-8">
-
-    <h2 className="text-3xl font-black text-cyan-400 mb-6">
-      AI Summary
-    </h2>
-
-    <p className="text-zinc-300 leading-9 text-lg">
-      {summary}
-    </p>
-
-  </div>
-
-)}
+              onClick={uploadPDF}
+              disabled={loading}
+              className="w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 text-2xl font-black hover:scale-[1.02] transition-all duration-300"
+            >
+              {loading ? "Uploading..." : "Upload PDF"}
+            </button>
 
           </div>
 
         </section>
 
+        {/* SUMMARY */}
+
+        {summary && (
+
+          <section className="px-10 py-10">
+
+            <div className="bg-white/5 border border-cyan-500/20 rounded-[40px] p-10">
+
+              <h2 className="text-5xl font-black text-cyan-400 mb-10">
+                AI Summary
+              </h2>
+
+              <p className="text-zinc-300 text-lg leading-10">
+                {summary}
+              </p>
+
+            </div>
+
+          </section>
+
+        )}
+
+        {/* MCQS */}
+
+        {mcqs && (
+
+          <section className="px-10 py-10">
+
+            <div className="bg-white/5 border border-yellow-500/20 rounded-[40px] p-10">
+
+              <h2 className="text-5xl font-black text-yellow-400 mb-10">
+                MCQs
+              </h2>
+
+              <div className="space-y-6">
+
+                {mcqs
+                  .split("\n")
+                  .filter((m) => m.trim() !== "")
+                  .map((m, index) => (
+
+                    <div
+                      key={index}
+                      className="bg-zinc-900/60 p-6 rounded-3xl border border-zinc-800"
+                    >
+                      📝 {m}
+                    </div>
+
+                  ))}
+
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
+
+        {/* VIVA */}
+
+        {viva && (
+
+          <section className="px-10 py-10">
+
+            <div className="bg-white/5 border border-pink-500/20 rounded-[40px] p-10">
+
+              <h2 className="text-5xl font-black text-pink-400 mb-10">
+                Viva Questions
+              </h2>
+
+              <div className="space-y-6">
+
+                {viva
+                  .split("\n")
+                  .filter((q) => q.trim() !== "")
+                  .map((q, index) => (
+
+                    <div
+                      key={index}
+                      className="bg-zinc-900/60 p-6 rounded-3xl border border-zinc-800"
+                    >
+                      🎤 {q}
+                    </div>
+
+                  ))}
+
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
+
+        {/* FLASHCARDS */}
+
+        {flashcards && (
+
+          <section className="px-10 py-10">
+
+            <div className="bg-white/5 border border-cyan-500/20 rounded-[40px] p-10">
+
+              <h2 className="text-5xl font-black bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text mb-12">
+                AI Flashcards
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+
+                {flashcards
+                  .split("Q:")
+                  .filter((card) => card.trim() !== "")
+                  .slice(0, 6)
+                  .map((card, index) => {
+
+                    const parts = card.split("A:");
+
+                    const question =
+                      parts[0] || "No Question";
+
+                    const answer =
+                      parts[1] || "No Answer";
+
+                    return (
+
+                      <Flashcard
+                        key={index}
+                        question={question.trim()}
+                        answer={answer.trim()}
+                      />
+
+                    );
+
+                  })}
+
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
+
         {/* FOOTER */}
 
-        <footer className="border-t border-zinc-800 bg-black/40 backdrop-blur-2xl">
+        <footer className="border-t border-zinc-800 bg-black/40 backdrop-blur-2xl mt-24">
 
           <div className="px-10 py-20">
 
