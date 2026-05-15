@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  resetToken: String,
+resetTokenExpire: Date,
 
   studyStats: {
     hours: {

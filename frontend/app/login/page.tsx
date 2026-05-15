@@ -99,7 +99,7 @@ export default function LoginPage() {
 
           <button
             onClick={() =>
-              alert("Forgot password feature coming soon")
+              router.push("/forgot-password")
             }
             className="text-sm text-cyan-400 hover:text-cyan-300"
           >

@@ -19,6 +19,11 @@ const chatRoutes =
 const historyRoutes =
   require("./routes/historyRoutes");
 
+const resetRoutes =
+require("./routes/resetRoutes");
+
+app.use("/api/auth", resetRoutes);
+
 const app = express();
 
 app.use(cors());
