@@ -39,7 +39,7 @@ export default function Home() {
   try {
 
     const res = await fetch(
-      "https://study-share-ai.onrender.com",
+      "https://study-share-ai.onrender.com/api/notes/upload",
       {
         method: "POST",
 
