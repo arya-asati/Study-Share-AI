@@ -95,3 +95,15 @@ app.post("/api/auth/signup", async (req, res) => {
   });
 
 });
+app.post("/api/chat", async (req, res) => {
+
+  const { message } = req.body;
+
+  console.log(message);
+
+  return res.json({
+    reply:
+      "AI Tutor Response: " + message,
+  });
+
+});

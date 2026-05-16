@@ -4,26 +4,26 @@ import { useState } from "react";
 
 export default function ChatBox() {
 
-  const [message, setMessage] = useState("");
+  const [question, setQuestion] = useState("");
 
   const [messages, setMessages] = useState<
-    { role: string; content: string }[]
+    { role: string; text: string }[]
   >([]);
 
   const [loading, setLoading] = useState(false);
 
-  const sendMessage = async () => {
+  const askAI = async () => {
 
-    if (!message) return;
+    if (!question) return;
 
     const userMessage = {
       role: "user",
-      content: message
+      text: question,
     };
 
     setMessages((prev) => [
       ...prev,
-      userMessage
+      userMessage,
     ]);
 
     setLoading(true);
@@ -31,17 +31,17 @@ export default function ChatBox() {
     try {
 
       const res = await fetch(
-        "http://localhost:5000/api/chat",
+        "https://study-share-ai.onrender.com/api/chat",
         {
           method: "POST",
 
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
 
           body: JSON.stringify({
-            message
-          })
+            message: question,
+          }),
         }
       );
 
@@ -49,20 +49,29 @@ export default function ChatBox() {
 
       setMessages((prev) => [
         ...prev,
-        userMessage,
         {
           role: "ai",
-          content: data.reply
-        }
+          text:
+            data.reply ||
+            "No response from AI",
+        },
       ]);
 
     } catch (err) {
 
       console.log(err);
 
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "ai",
+          text: "AI Server Error",
+        },
+      ]);
+
     }
 
-    setMessage("");
+    setQuestion("");
 
     setLoading(false);
 
@@ -70,73 +79,66 @@ export default function ChatBox() {
 
   return (
 
-    <div className="w-full bg-white/5 border border-white/10 rounded-[40px] p-8 shadow-2xl backdrop-blur-xl">
+    <section className="px-10 py-20">
 
-      <h2 className="text-4xl font-black mb-8 text-cyan-400">
-        AI Tutor Chat
-      </h2>
+      <div className="bg-white/5 border border-cyan-500/20 rounded-[40px] p-10 backdrop-blur-2xl">
 
-      {/* CHAT AREA */}
+        <h2 className="text-5xl font-black text-cyan-400 mb-10">
+          AI Tutor Chat
+        </h2>
 
-      <div className="h-[500px] overflow-y-auto space-y-6 mb-6 pr-2">
+        <div className="h-[400px] overflow-y-auto bg-black/30 rounded-3xl p-6 space-y-4 mb-6">
 
-        {messages.map((msg, index) => (
+          {messages.map((msg, index) => (
 
-          <div
-            key={index}
-            className={`p-5 rounded-3xl max-w-[80%] ${
-              msg.role === "user"
-                ? "bg-cyan-500 ml-auto text-white"
-                : "bg-zinc-900 border border-zinc-800"
-            }`}
+            <div
+              key={index}
+              className={`p-4 rounded-2xl max-w-[80%]
+              ${
+                msg.role === "user"
+                  ? "bg-cyan-500 ml-auto text-white"
+                  : "bg-zinc-800 text-zinc-200"
+              }`}
+            >
+              {msg.text}
+            </div>
+
+          ))}
+
+          {loading && (
+
+            <div className="bg-zinc-800 text-zinc-300 p-4 rounded-2xl w-fit">
+              AI is typing...
+            </div>
+
+          )}
+
+        </div>
+
+        <div className="flex gap-4">
+
+          <input
+            type="text"
+            value={question}
+            onChange={(e) =>
+              setQuestion(e.target.value)
+            }
+            placeholder="Ask anything..."
+            className="flex-1 bg-zinc-900 border border-zinc-700 rounded-2xl p-5 text-white outline-none"
+          />
+
+          <button
+            onClick={askAI}
+            className="px-8 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold"
           >
+            Send
+          </button>
 
-            <p className="leading-8">
-              {msg.content}
-            </p>
-
-          </div>
-
-        ))}
-
-        {loading && (
-
-          <div className="bg-zinc-900 border border-zinc-800 p-5 rounded-3xl max-w-[80%]">
-
-            🤖 AI is typing...
-
-          </div>
-
-        )}
+        </div>
 
       </div>
 
-      {/* INPUT */}
-
-      <div className="flex gap-4">
-
-        <input
-          type="text"
-          value={message}
-          onChange={(e) =>
-            setMessage(e.target.value)
-          }
-          placeholder="Ask AI anything..."
-          className="flex-1 bg-zinc-900 border border-zinc-700 rounded-2xl p-5 outline-none"
-        />
-
-        <button
-          onClick={sendMessage}
-          className="bg-gradient-to-r from-cyan-500 to-blue-600 px-8 rounded-2xl font-bold hover:scale-105 transition-all duration-300"
-        >
-
-          Send
-
-        </button>
-
-      </div>
-
-    </div>
+    </section>
 
   );
 
